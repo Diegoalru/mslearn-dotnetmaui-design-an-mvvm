@@ -1,13 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using MovieCatalog.Models;
 
 namespace MovieCatalog.ViewModels;
 
-public class MovieViewModel: ObservableObject
+public class MovieViewModel(Movie movie) : ObservableObject
 {
-    private string _title;
-    private string _studio;
-    private string _director;
-    private DateOnly _year;
+    private string _title = movie.Title;
+    private string _studio = movie.Studio;
+    private string _director = movie.Director;
+    private DateOnly _year = new(movie.Year, 1, 1);
 
     public string Title
     {
@@ -31,13 +32,5 @@ public class MovieViewModel: ObservableObject
     {
         get => _year;
         set => SetProperty(ref _year, value);
-    }
-
-    public MovieViewModel(Models.Movie movie)
-    {
-        _title = movie.Title;
-        _studio = movie.Studio;
-        _director = movie.Director;
-        _year = new DateOnly(movie.Year, 1, 1);
     }
 }
