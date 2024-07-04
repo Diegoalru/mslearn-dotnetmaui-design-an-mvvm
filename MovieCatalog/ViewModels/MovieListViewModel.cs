@@ -1,15 +1,21 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using MovieCatalog.Models;
 
 namespace MovieCatalog.ViewModels;
 
-public class MovieListViewModel: ObservableObject
+public class MovieListViewModel : ObservableObject
 {
     public ObservableCollection<MovieViewModel> Movies { get; set; }
+    public ICommand DeleteMovieCommand { get; set; }
     private MovieViewModel? _selectedMovie;
 
-    public MovieListViewModel() =>
+    public MovieListViewModel()
+    {
         Movies = [];
+        DeleteMovieCommand = new Command<MovieViewModel>(DeleteMovie);
+    }
 
     public MovieViewModel? SelectedMovie
     {
@@ -19,12 +25,14 @@ public class MovieListViewModel: ObservableObject
 
     public async Task RefreshMovies()
     {
-        IEnumerable<Models.Movie> moviesData = await Models.MoviesDatabase.GetMovies();
+        var moviesData = await MoviesDatabase.GetMovies();
 
-        foreach (Models.Movie movie in moviesData)
+        foreach (var movie in moviesData)
             Movies.Add(new MovieViewModel(movie));
     }
 
-    public void DeleteMovie(MovieViewModel movie) =>
+    private void DeleteMovie(MovieViewModel movie)
+    {
         Movies.Remove(movie);
+    }
 }
