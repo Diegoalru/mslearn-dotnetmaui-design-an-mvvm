@@ -6,9 +6,16 @@ namespace MovieCatalog.ViewModels;
 public class MovieListViewModel: ObservableObject
 {
     public ObservableCollection<MovieViewModel> Movies { get; set; }
+    private MovieViewModel? _selectedMovie;
 
     public MovieListViewModel() =>
         Movies = [];
+
+    public MovieViewModel? SelectedMovie
+    {
+        get => _selectedMovie;
+        set => SetProperty(ref _selectedMovie, value);
+    }
 
     public async Task RefreshMovies()
     {
